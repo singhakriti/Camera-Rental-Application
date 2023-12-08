@@ -74,13 +74,23 @@ import com.camerarental.bean.User;
 		}
 		
 		public void rentCamera(int cameraId, User user) {
-			Camera camera = listOfCamera.get(cameraId);
-			if(user.getWalletBalance()>=camera.getPerDayPrice()) {
-				camera.setStatus("Rented");
-				System.out.println("YOUR TRANSACTION FOR CAMERA " + camera.getBrand()
-				+ " " + camera.getModel() + " with rent "+ camera.getPerDayPrice() + " HAS SUCCESSFULLY COMPLETED.");
-			} else {
-				System.out.println("ERROR: TRANSACTION FAILED DUE TO INSUFFICIENT WALLET BALANCE. PLEASE DEPOSIT THE AMOUNT TO YOUR WALLET.");
+			Iterator<Camera> li = listOfCamera.iterator();
+			boolean cameraFound=false;
+			while(li.hasNext()) {
+				Camera camera = li.next();
+				if(camera.getCameraId()==cameraId)  {
+					cameraFound=true;
+					if(user.getWalletBalance()>=camera.getPerDayPrice()) {
+						camera.setStatus("Rented");
+						System.out.println("YOUR TRANSACTION FOR CAMERA " + camera.getBrand()
+						+ " " + camera.getModel() + " with rent "+ camera.getPerDayPrice() + " HAS SUCCESSFULLY COMPLETED.");
+					} else {
+						System.out.println("ERROR: TRANSACTION FAILED DUE TO INSUFFICIENT WALLET BALANCE. PLEASE DEPOSIT THE AMOUNT TO YOUR WALLET.");
+					}
+				}
+			}
+			if(!cameraFound) {
+				System.out.println("Camera is not available.");
 			}
 		}
 		
